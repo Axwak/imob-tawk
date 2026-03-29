@@ -112,13 +112,13 @@ body {
 </div>
 
 <script>
-// 🔹 pegar parâmetros
+// pegar parâmetros
 function getParam(name) {
     const url = new URL(window.location.href);
     return url.searchParams.get(name) || "";
 }
 
-// 🔹 dados vindos do C#
+// dados vindos do C#
 var dados = {
     nome: getParam("nome") || "Usuário",
     email: getParam("email") || "usuario@local.com",
@@ -128,7 +128,7 @@ var dados = {
     versao_imob: getParam("versao_imob")
 };
 
-// 🔹 exibir info
+// exibir info
 document.getElementById("info").innerHTML = `
 <b>Usuário:</b> ${dados.nome}<br>
 <b>Cartório:</b> ${dados.cartorio_nome}<br>
@@ -136,17 +136,17 @@ document.getElementById("info").innerHTML = `
 <b>Versão:</b> ${dados.versao_imob}
 `;
 
-// 🔹 controle de fallback
+// controle de fallback
 let tawkCarregado = false;
 
-// 🔹 função manual
+// função manual
 function abrirChat() {
     if (Tawk_API) {
         Tawk_API.maximize();
     }
 }
 
-// 🔹 Tawk
+// Tawk
 var Tawk_API = Tawk_API || {};
 var Tawk_LoadStart = new Date();
 
@@ -158,13 +158,13 @@ Tawk_API.onLoad = function () {
     // esconder loading
     document.getElementById("loadingArea").classList.add("hidden");
 
-    // 👤 dados básicos
+    // dados básicos
     Tawk_API.setAttributes({
         name: dados.nome,
         email: dados.email
     });
 
-    // 🔥 dados extras
+    // dados extras
     setTimeout(function () {
         Tawk_API.setAttributes({
             cartorio_nome: getParam("cartorio_nome"),
@@ -181,7 +181,7 @@ Tawk_API.onLoad = function () {
     Tawk_API.maximize();
 };
 
-// 🔥 fallback se falhar
+// fallback se falhar
 setTimeout(function () {
     if (!tawkCarregado) {
         console.log("Falha ao carregar Tawk");
@@ -191,7 +191,7 @@ setTimeout(function () {
     }
 }, 6000);
 
-// 🔹 carregar script
+// carregar script
 (function(){
     var s1 = document.createElement("script"),
         s0 = document.getElementsByTagName("script")[0];
