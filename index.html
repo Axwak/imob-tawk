@@ -185,25 +185,45 @@ Tawk_API.onLoad = function () {
 
     document.getElementById("loadingArea").classList.add("hidden");
 
+    // 🔥 garantir valores válidos
+    var nome = dados.nome || "Usuario";
+    var email = dados.email || "usuario@local.com";
+
+    console.log("Enviando atributos básicos");
+
     Tawk_API.setAttributes({
-        name: dados.nome,
-        email: dados.email,
-        machine_id: getParam("machine_id")
+        name: nome,
+        email: email
+    }, function(error){
+        if(error){
+            console.log("Erro atributos básicos:", error);
+            return;
+        }
+
+        console.log("Enviando atributos extras");
+
+        // 🔥 só envia depois do primeiro OK
+        setTimeout(function(){
+
+            Tawk_API.setAttributes({
+                cartorio_nome: getParam("cartorio_nome") || "N/A",
+                cartorio_cns: getParam("cartorio_cns") || "N/A",
+                cartorio_cidade: getParam("cartorio_cidade") || "N/A",
+                cartorio_uf: getParam("cartorio_uf") || "N/A",
+                cartorio_oficial: getParam("cartorio_oficial") || "N/A",
+                versao_imob: getParam("versao_imob") || "N/A",
+                versao_postgres: getParam("versao_postgres") || "N/A",
+                machine_id: getParam("machine_id") || "N/A"
+            }, function(err){
+                if(err) console.log("Erro atributos extras:", err);
+                else console.log("Atributos enviados com sucesso");
+            });
+
+        }, 1000);
     });
 
-    setTimeout(function(){
-        Tawk_API.setAttributes({
-            cartorio_nome: getParam("cartorio_nome"),
-            cartorio_cns: getParam("cartorio_cns"),
-            cartorio_cidade: getParam("cartorio_cidade"),
-            cartorio_uf: getParam("cartorio_uf"),
-            cartorio_oficial: getParam("cartorio_oficial"),
-            versao_imob: getParam("versao_imob"),
-            versao_postgres: getParam("versao_postgres")
-        });
-    },1000);
-
     Tawk_API.maximize();
+};
 
     // 🔥 mensagem automática
     setTimeout(function(){
