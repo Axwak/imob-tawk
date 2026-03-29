@@ -64,6 +64,13 @@ Tawk_API.onLoad = function () {
         },1000);
     });
 
+    //enviarLogBackend({
+    //    nome: dados.nome,
+    //    cartorio: getParam("cartorio_nome"),
+    //    cidade: getParam("cartorio_cidade"),
+    //    machine_id: getParam("machine_id")
+    //});
+
     Tawk_API.maximize();
 };
 
