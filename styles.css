@@ -172,3 +172,9 @@ body {
     transform: scale(1.05);
     opacity: 1;
 }
+
+.image-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
