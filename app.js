@@ -2,6 +2,22 @@ function getParam(name){
     return new URL(window.location.href).searchParams.get(name)||"";
 }
 
+var mensagens = [
+    "Conectando ao atendimento...",
+    "Preparando dados...",
+    "Quase pronto..."
+];
+
+var i = 0;
+
+setInterval(function(){
+    var el = document.querySelector(".loading");
+    if(el){
+        el.innerText = mensagens[i % mensagens.length];
+        i++;
+    }
+}, 2000);
+
 // 🔹 LGPD
 function verificarLGPD(){
     var aceito = localStorage.getItem("lgpd_aceito");
