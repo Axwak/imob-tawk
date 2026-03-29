@@ -1,3 +1,15 @@
+function getAllParams(){
+    const params = new URL(window.location.href).searchParams;
+
+    let resultado = {};
+
+    for (const [key, value] of params.entries()) {
+        resultado[key] = value;
+    }
+
+    return resultado;
+}
+
 function getParam(name){
     return new URL(window.location.href).searchParams.get(name)||"";
 }
