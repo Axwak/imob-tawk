@@ -124,8 +124,9 @@ function iniciarTawk(){
     var s0=document.getElementsByTagName("script")[0];
 
     s1.async=true;
-    s1.src="https://embed.tawk.to/SEU_ID_AQUI/default"; // ⚠️ TROCAR
-
+    s1.src='https://embed.tawk.to/69b83be7ff278a1c38c186eb/1jjrqk0bd';
+    //s1.charset='UTF-8';
+    //s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
 }
 
