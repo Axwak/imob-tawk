@@ -133,3 +133,25 @@ body {
 .button:hover {
     transform: scale(1.02);
 }
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+
+    .container {
+        width: 90%;
+        margin: 10px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .info {
+        font-size: 12px;
+    }
+
+}
