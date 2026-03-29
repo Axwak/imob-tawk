@@ -4,130 +4,45 @@
 <meta charset="UTF-8">
 <title>Suporte Brainsoft</title>
 
-<!-- 🔥 FAVICON -->
-<link rel="icon"https://www.brainsoftsistemas.com.br/favicon.ico">
+<link rel="stylesheet" href="styles.css">
 
-<style>
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial;
-    background: linear-gradient(135deg, #0f7b6c, #0b5e52);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* CARD */
-.container {
-    width: 480px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-    overflow: hidden;
-}
-
-/* HEADER */
-.header {
-    background: #0f7b6c;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.header span {
-    font-size: 13px;
-    opacity: 0.9;
-}
-
-/* BODY */
-.content {
-    padding: 25px;
-}
-
-/* INFO */
-.info {
-    background: #f4f6f9;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 13px;
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-/* LOADING */
-.loading {
-    text-align: center;
-    margin-top: 10px;
-    color: #0f7b6c;
-}
-
-.spinner {
-    border: 4px solid #eee;
-    border-top: 4px solid #0f7b6c;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 15px auto;
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
-}
-
-/* BUTTON */
-.button {
-    background: #0f7b6c;
-    color: white;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-
-.button:hover {
-    background: #0b5e52;
-}
-
-/* FOOTER */
-.footer {
-    text-align: center;
-    font-size: 12px;
-    padding: 10px;
-    color: #888;
-}
-
-.hidden {
-    display: none;
-}
-</style>
-
+<!-- FAVICON -->
+<link rel="icon" href="https://www.brainsoftsistemas.com.br/wp-content/uploads/2020/09/favicon.png">
 </head>
 
 <body>
 
+<!-- 🔒 LGPD -->
+<div id="lgpdModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Termo de Consentimento</h3>
+
+        <p>
+            Esta aplicação coleta dados do sistema para agilizar o atendimento técnico,
+            incluindo informações do cartório, usuário e versão do sistema.
+        </p>
+
+        <p>
+            Os dados são utilizados exclusivamente para suporte técnico.
+        </p>
+
+        <button onclick="aceitarLGPD()" class="button">
+            Aceito e continuar
+        </button>
+    </div>
+</div>
+
+<!-- APP -->
 <div class="container">
 
-    <!-- HEADER -->
     <div class="header">
         <h1>Brainsoft Sistemas</h1>
         <span>Suporte Técnico IMOB</span>
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
 
-        <div class="info" id="info"></div>
+        <div id="info" class="info"></div>
 
         <div id="loadingArea" class="loading">
             <div class="spinner"></div>
@@ -140,146 +55,13 @@ body {
 
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
         © Brainsoft Sistemas
     </div>
 
 </div>
 
-<script>
-
-// 🔹 parâmetros
-function getParam(name){
-    return new URL(window.location.href).searchParams.get(name)||"";
-}
-
-// 🔹 dados
-var dados = {
-    nome: getParam("nome") || "Usuário",
-    email: getParam("email") || "usuario@local.com",
-    cartorio: getParam("cartorio_nome"),
-    cidade: getParam("cartorio_cidade"),
-    uf: getParam("cartorio_uf"),
-    versao: getParam("versao_imob")
-};
-
-// 🔹 mostrar info
-document.getElementById("info").innerHTML = `
-<b>Usuário:</b> ${dados.nome}<br>
-<b>Cartório:</b> ${dados.cartorio}<br>
-<b>Cidade:</b> ${dados.cidade} - ${dados.uf}<br>
-<b>Versão do sistema:</b> ${dados.versao}
-`;
-
-// 🔹 controle
-var carregou = false;
-
-// 🔹 Tawk
-var Tawk_API = Tawk_API || {};
-var Tawk_LoadStart = new Date();
-
-Tawk_API.onLoad = function () {
-
-    carregou = true;
-
-    document.getElementById("loadingArea").classList.add("hidden");
-
-    // 🔥 garantir valores válidos
-    var nome = dados.nome || "Usuario";
-    var email = dados.email || "usuario@local.com";
-
-    console.log("Enviando atributos básicos");
-
-    Tawk_API.setAttributes({
-        name: nome,
-        email: email
-    }, function(error){
-        if(error){
-            console.log("Erro atributos básicos:", error);
-            return;
-        }
-
-        console.log("Enviando atributos extras");
-
-        // 🔥 só envia depois do primeiro OK
-        setTimeout(function(){
-
-            Tawk_API.setAttributes({
-                cartorio_nome: getParam("cartorio_nome") || "N/A",
-                cartorio_cns: getParam("cartorio_cns") || "N/A",
-                cartorio_cidade: getParam("cartorio_cidade") || "N/A",
-                cartorio_uf: getParam("cartorio_uf") || "N/A",
-                cartorio_oficial: getParam("cartorio_oficial") || "N/A",
-                versao_imob: getParam("versao_imob") || "N/A",
-                versao_postgres: getParam("versao_postgres") || "N/A",
-                machine_id: getParam("machine_id") || "N/A"
-            }, function(err){
-                if(err) console.log("Erro atributos extras:", err);
-                else console.log("Atributos enviados com sucesso");
-            });
-
-        }, 1000);
-    });
-
-    Tawk_API.maximize();
-};
-
-    // 🔥 mensagem automática
-    setTimeout(function(){
-        try {
-            var iframe = document.querySelector("iframe");
-            if (!iframe) return;
-
-            var doc = iframe.contentWindow.document;
-            var input = doc.querySelector("textarea");
-            var button = doc.querySelector("button");
-
-            if(input && button){
-                input.value = "Olá, preciso de suporte técnico.";
-                button.click();
-            }
-        } catch(e){}
-    },4000);
-};
-
-// 🔥 fallback
-setTimeout(function(){
-    if(!carregou){
-        document.getElementById("loadingArea").classList.add("hidden");
-        document.getElementById("btnManual").classList.remove("hidden");
-    }
-},8000);
-
-// 🔹 botão manual robusto
-function abrirChat(){
-    var tentativas = 0;
-
-    var intervalo = setInterval(function(){
-        if (Tawk_API && typeof Tawk_API.maximize === "function") {
-            Tawk_API.maximize();
-            clearInterval(intervalo);
-        }
-
-        tentativas++;
-        if(tentativas > 10){
-            clearInterval(intervalo);
-            alert("Não foi possível abrir o chat.");
-        }
-    },500);
-}
-
-// 🔹 script Tawk
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/69b83be7ff278a1c38c186eb/1jjrqk0bd';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-    })();
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
