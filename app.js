@@ -110,3 +110,15 @@ function iniciarTawk(){
 if(verificarLGPD()){
     iniciarTawk();
 }
+
+//function enviarLogBackend(dados){
+//    fetch("https://SEU_BACKEND/api/atendimento", {
+//        method: "POST",
+//        headers: {
+//            "Content-Type": "application/json"
+//        },
+//        body: JSON.stringify(dados)
+//    })
+//    .then(() => console.log("Log enviado"))
+//    .catch(() => console.log("Falha ao enviar log"));
+//}
