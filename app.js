@@ -1,26 +1,23 @@
 // ===============================
 // 🔹 UTIL
 // ===============================
-function getParam(name){
-    return new URL(window.location.href).searchParams.get(name)||"";
+function getParam(name) {
+    return new URL(window.location.href).searchParams.get(name) || "";
 }
 
 // ===============================
 // 🔹 LGPD
 // ===============================
-function verificarLGPD(){
-    var aceito = localStorage.getItem("lgpd_aceito");
-
-    if(!aceito){
+function verificarLGPD() {
+    if (!localStorage.getItem("lgpd_aceito")) {
         document.getElementById("lgpdModal").classList.remove("hidden");
         return false;
     }
-
     return true;
 }
 
-function aceitarLGPD(){
-    localStorage.setItem("lgpd_aceito","1");
+function aceitarLGPD() {
+    localStorage.setItem("lgpd_aceito", "1");
     document.getElementById("lgpdModal").classList.add("hidden");
     iniciarTawk();
 }
@@ -28,28 +25,24 @@ function aceitarLGPD(){
 // ===============================
 // 🔹 DADOS
 // ===============================
-var dados = {
-    nome: getParam("nome") || "Usuário",
-    email: getParam("email") || "usuario@local.com",
-    cartorio: getParam("cartorio_nome") || "Não informado",
-    cidade: getParam("cartorio_cidade") || "Não informado",
-    uf: getParam("cartorio_uf") || ""
-};
+var nome = getParam("nome") || "Usuário";
+var email = getParam("email") || "usuario@local.com";
+var cartorio = getParam("cartorio_nome") || "Não informado";
+var cidade = getParam("cartorio_cidade") || "";
+var uf = getParam("cartorio_uf") || "";
 
 // ===============================
 // 🔹 INFO NA TELA
 // ===============================
-document.getElementById("info").innerHTML = `
-<b>Usuário:</b> ${dados.nome}<br>
-<b>Cartório:</b> ${dados.cartorio}<br>
-<b>Local:</b> ${dados.cidade} ${dados.uf ? "- " + dados.uf : ""}
-`;
+document.getElementById("info").innerHTML =
+    "<b>Usuário:</b> " + nome + "<br>" +
+    "<b>Cartório:</b> " + cartorio + "<br>" +
+    "<b>Local:</b> " + (cidade ? cidade + (uf ? " - " + uf : "") : "Não informado");
 
 // ===============================
 // 🔹 CONTROLE
 // ===============================
 var carregou = false;
-
 var Tawk_API = Tawk_API || {};
 var Tawk_LoadStart = new Date();
 
@@ -59,35 +52,25 @@ var Tawk_LoadStart = new Date();
 Tawk_API.onLoad = function () {
 
     carregou = true;
-
     document.getElementById("loadingArea").classList.add("hidden");
 
-    // 🔹 atributos básicos
     Tawk_API.setAttributes({
-        name: dados.nome,
-        email: dados.email
-    }, function(error){
+        name: nome,
+        email: email
+    }, function () {
 
-        if(error){
-            console.log("Erro atributos básicos:", error);
-            return;
-        }
-
-        // 🔹 atributos extras
-        setTimeout(function(){
-
+        setTimeout(function () {
             Tawk_API.setAttributes({
-                cartorio_nome:getParam("cartorio_nome"),
-                cartorio_cns:getParam("cartorio_cns"),
-                cartorio_cidade:getParam("cartorio_cidade"),
-                cartorio_uf:getParam("cartorio_uf"),
-                cartorio_oficial:getParam("cartorio_oficial"),
-                versao_imob:getParam("versao_imob"),
-                versao_postgres:getParam("versao_postgres"),
-                machine_id:getParam("machine_id")
+                cartorio_nome: getParam("cartorio_nome"),
+                cartorio_cns: getParam("cartorio_cns"),
+                cartorio_cidade: getParam("cartorio_cidade"),
+                cartorio_uf: getParam("cartorio_uf"),
+                cartorio_oficial: getParam("cartorio_oficial"),
+                versao_imob: getParam("versao_imob"),
+                versao_postgres: getParam("versao_postgres"),
+                machine_id: getParam("machine_id")
             });
-
-        },1000);
+        }, 800);
     });
 
     Tawk_API.maximize();
@@ -96,53 +79,35 @@ Tawk_API.onLoad = function () {
 // ===============================
 // 🔹 FALLBACK
 // ===============================
-setTimeout(function(){
-    if(!carregou){
+setTimeout(function () {
+    if (!carregou) {
         document.getElementById("loadingArea").classList.add("hidden");
         document.getElementById("btnManual").classList.remove("hidden");
     }
-},8000);
+}, 8000);
 
 // ===============================
 // 🔹 BOTÃO MANUAL
 // ===============================
-function abrirChat(){
-
-    var tentativas=0;
-
-    var intervalo=setInterval(function(){
-
-        if(Tawk_API && typeof Tawk_API.maximize==="function"){
-            Tawk_API.maximize();
-            clearInterval(intervalo);
-        }
-
-        tentativas++;
-
-        if(tentativas>10){
-            clearInterval(intervalo);
-            alert("Não foi possível abrir o chat.");
-        }
-
-    },500);
+function abrirChat() {
+    if (Tawk_API && typeof Tawk_API.maximize === "function") {
+        Tawk_API.maximize();
+    }
 }
 
 // ===============================
 // 🔹 INICIAR TAWK
 // ===============================
-function iniciarTawk(){
-    var s1=document.createElement("script");
-    var s0=document.getElementsByTagName("script")[0];
-
-    s1.async=true;
-    s1.src="https://embed.tawk.to/SEU_ID_AQUI/default"; // ⚠️ TROCAR
-
-    s0.parentNode.insertBefore(s1,s0);
+function iniciarTawk() {
+    var s1 = document.createElement("script");
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/SEU_ID_AQUI/default"; // ⚠️ trocar
+    document.body.appendChild(s1);
 }
 
 // ===============================
 // 🔹 START
 // ===============================
-if(verificarLGPD()){
+if (verificarLGPD()) {
     iniciarTawk();
 }
