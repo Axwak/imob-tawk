@@ -13,46 +13,14 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #333;
 }
-
 .container {
     background: white;
     width: 420px;
     padding: 30px;
     border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     text-align: center;
 }
-
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #0057b8;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 20px;
-}
-
-.info {
-    text-align: left;
-    font-size: 13px;
-    background: #f4f6f9;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.loading {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #0057b8;
-}
-
 .spinner {
     border: 4px solid #eee;
     border-top: 4px solid #0057b8;
@@ -62,146 +30,98 @@ body {
     animation: spin 1s linear infinite;
     margin: 15px auto;
 }
-
 @keyframes spin {
-    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 .button {
     background: #0057b8;
     color: white;
+    padding: 10px;
     border: none;
-    padding: 12px;
     width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
 }
-
-.button:hover {
-    background: #003f88;
-}
-
-.hidden {
-    display: none;
-}
+.hidden { display:none; }
 </style>
 
 </head>
-
 <body>
 
 <div class="container">
+    <h2>Brainsoft Sistemas</h2>
+    <div id="info"></div>
 
-    <div class="logo">Brainsoft Sistemas</div>
-    <div class="subtitle">Suporte Técnico IMOB</div>
-
-    <div class="info" id="info"></div>
-
-    <div id="loadingArea">
+    <div id="loading">
         <div class="spinner"></div>
-        <div class="loading">Conectando ao atendimento...</div>
+        <p>Conectando...</p>
     </div>
 
-    <button id="btnManual" class="button hidden" onclick="abrirChat()">
-        Abrir chat manualmente
+    <button id="btn" class="button hidden" onclick="abrirChat()">
+        Abrir chat
     </button>
-
 </div>
 
 <script>
-// pegar parâmetros
-function getParam(name) {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(name) || "";
+function getParam(name){
+    return new URL(window.location.href).searchParams.get(name)||"";
 }
 
-// dados vindos do C#
 var dados = {
-    nome: getParam("nome") || "Usuário",
-    email: getParam("email") || "usuario@local.com",
+    nome: getParam("nome"),
+    email: getParam("email"),
     cartorio_nome: getParam("cartorio_nome"),
-    cartorio_cidade: getParam("cartorio_cidade"),
-    cartorio_uf: getParam("cartorio_uf"),
-    versao_imob: getParam("versao_imob")
+    cidade: getParam("cartorio_cidade"),
+    uf: getParam("cartorio_uf")
 };
 
-// exibir info
-document.getElementById("info").innerHTML = `
-<b>Usuário:</b> ${dados.nome}<br>
-<b>Cartório:</b> ${dados.cartorio_nome}<br>
-<b>Cidade:</b> ${dados.cartorio_cidade} - ${dados.cartorio_uf}<br>
-<b>Versão:</b> ${dados.versao_imob}
-`;
+document.getElementById("info").innerHTML =
+    "<b>"+dados.nome+"</b><br>"+dados.cartorio_nome;
 
-// controle de fallback
-let tawkCarregado = false;
+var Tawk_API = Tawk_API||{};
+var carregou=false;
 
-// função manual
-function abrirChat() {
-    if (Tawk_API) {
-        Tawk_API.maximize();
-    }
-}
+Tawk_API.onLoad=function(){
+    carregou=true;
 
-// Tawk
-var Tawk_API = Tawk_API || {};
-var Tawk_LoadStart = new Date();
+    document.getElementById("loading").classList.add("hidden");
 
-Tawk_API.onLoad = function () {
-
-    console.log("Tawk carregado");
-    tawkCarregado = true;
-
-    // esconder loading
-    document.getElementById("loadingArea").classList.add("hidden");
-
-    // dados básicos
     Tawk_API.setAttributes({
         name: dados.nome,
-        email: dados.email
+        email: dados.email,
+        machine_id: getParam("machine_id")
     });
 
-    // dados extras
-    setTimeout(function () {
+    setTimeout(function(){
         Tawk_API.setAttributes({
-            cartorio_nome: getParam("cartorio_nome"),
-            cartorio_cns: getParam("cartorio_cns"),
-            cartorio_cidade: getParam("cartorio_cidade"),
-            cartorio_uf: getParam("cartorio_uf"),
-            cartorio_oficial: getParam("cartorio_oficial"),
-            versao_imob: getParam("versao_imob"),
-            versao_postgres: getParam("versao_postgres")
+            cartorio_nome:getParam("cartorio_nome"),
+            cartorio_cns:getParam("cartorio_cns"),
+            cartorio_cidade:getParam("cartorio_cidade"),
+            cartorio_uf:getParam("cartorio_uf"),
+            cartorio_oficial:getParam("cartorio_oficial"),
+            versao_imob:getParam("versao_imob"),
+            versao_postgres:getParam("versao_postgres")
         });
-    }, 1000);
+    },1000);
 
-    // abrir chat
     Tawk_API.maximize();
 };
 
-// fallback se falhar
-setTimeout(function () {
-    if (!tawkCarregado) {
-        console.log("Falha ao carregar Tawk");
-
-        document.getElementById("loadingArea").classList.add("hidden");
-        document.getElementById("btnManual").classList.remove("hidden");
+setTimeout(function(){
+    if(!carregou){
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("btn").classList.remove("hidden");
     }
-}, 6000);
+},6000);
 
-// carregar script
+function abrirChat(){
+    if(Tawk_API) Tawk_API.maximize();
+}
+
 (function(){
-    var s1 = document.createElement("script"),
-        s0 = document.getElementsByTagName("script")[0];
-
-    s1.async = true;
-    s1.src = "https://embed.tawk.to/SEU_ID_AQUI/default"; // ⚠️ ALTERAR
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
-
-    s0.parentNode.insertBefore(s1, s0);
+    var s1=document.createElement("script");
+    var s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src="https://embed.tawk.to/SEU_ID_AQUI/default";
+    s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 
