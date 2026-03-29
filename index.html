@@ -1,1 +1,61 @@
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Online - Brainsoft</title>
+</head>
+<body>
+  
+<!--Start of Tawk.to Script-->
+<script>
+function getParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name) || "";
+}
+
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+Tawk_API.onLoad = function () {
+
+    console.log("Tawk carregado");
+
+    var nome = getParam("nome") || "Usuário";
+    var email = getParam("email") || "usuario@local.com";
+
+    Tawk_API.setAttributes({
+        name: nome,
+        email: email
+    });
+
+    setTimeout(function () {
+
+        Tawk_API.setAttributes({
+            cartorio_nome: getParam("cartorio"),
+            cartorio_cns: getParam("cns"),
+            cartorio_cidade: getParam("cidade"),
+            cartorio_uf: getParam("uf"),
+            cartorio_oficial: getParam("oficial"),
+            versao_imob: getParam("versao"),
+            versao_postgres: getParam("postgres")
+        });
+
+    }, 1000);
+
+    Tawk_API.maximize();
+};
+    
+(function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/69b83be7ff278a1c38c186eb/1jjrqk0bd';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>
