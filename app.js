@@ -22,6 +22,16 @@ function aceitarLGPD() {
     iniciarTawk();
 }
 
+function reabrirLGPD(){
+    localStorage.removeItem("lgpd_aceito");
+    document.getElementById("lgpdModal").classList.remove("hidden");
+}      
+
+function resetLGPD(){
+    localStorage.removeItem("lgpd_aceito");
+    alert("LGPD resetado");
+}
+
 // ===============================
 // 🔹 DADOS
 // ===============================
