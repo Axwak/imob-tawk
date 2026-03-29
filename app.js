@@ -1,3 +1,13 @@
+// ===============================
+// 🔹 UTIL - PEGAR PARAMETRO
+// ===============================
+function getParam(name){
+    return new URL(window.location.href).searchParams.get(name)||"";
+}
+
+// ===============================
+// 🔹 PEGAR TODOS PARAMETROS
+// ===============================
 function getAllParams(){
     const params = new URL(window.location.href).searchParams;
 
@@ -10,27 +20,9 @@ function getAllParams(){
     return resultado;
 }
 
-function getParam(name){
-    return new URL(window.location.href).searchParams.get(name)||"";
-}
-
-var mensagens = [
-    "Conectando ao atendimento...",
-    "Preparando dados...",
-    "Quase pronto..."
-];
-
-var i = 0;
-
-setInterval(function(){
-    var el = document.querySelector(".loading");
-    if(el){
-        el.innerText = mensagens[i % mensagens.length];
-        i++;
-    }
-}, 2000);
-
+// ===============================
 // 🔹 LGPD
+// ===============================
 function verificarLGPD(){
     var aceito = localStorage.getItem("lgpd_aceito");
 
@@ -48,34 +40,72 @@ function aceitarLGPD(){
     iniciarTawk();
 }
 
-// 🔹 dados
+// ===============================
+// 🔹 DEBUG VISUAL
+// ===============================
+var allParams = getAllParams();
+
+console.log("PARAMETROS RECEBIDOS:", allParams);
+
+let debugHtml = "<b>DEBUG - Parâmetros recebidos:</b><br><br>";
+
+for (var key in allParams) {
+    var valor = allParams[key];
+
+    if(!valor){
+        valor = "<span style='color:red'>VAZIO</span>";
+    }
+
+    debugHtml += `<b>${key}:</b> ${valor}<br>`;
+}
+
+// mostrar URL completa
+debugHtml += "<br><b>URL:</b><br>" + window.location.href;
+
+document.getElementById("info").innerHTML = debugHtml;
+
+
+// ===============================
+// 🔹 DADOS PRINCIPAIS
+// ===============================
 var dados = {
     nome: getParam("nome") || "Usuário",
     email: getParam("email") || "usuario@local.com"
 };
 
-// 🔹 info tela
-document.getElementById("info").innerHTML = `
-<b>${dados.nome}</b><br>
-${getParam("cartorio_nome")}
-`;
-
+// ===============================
+// 🔹 CONTROLE
+// ===============================
 var carregou = false;
 
 var Tawk_API = Tawk_API || {};
 var Tawk_LoadStart = new Date();
 
+// ===============================
+// 🔹 TAWK
+// ===============================
 Tawk_API.onLoad = function () {
 
     carregou = true;
 
     document.getElementById("loadingArea").classList.add("hidden");
 
+    console.log("Tawk carregado");
+
+    // 🔹 atributos básicos
     Tawk_API.setAttributes({
         name: dados.nome,
         email: dados.email
-    }, function(){
+    }, function(error){
 
+        if(error){
+            console.log("Erro atributos básicos:", error);
+            return;
+        }
+
+        console.log("Enviando atributos extras");
+
+        // 🔹 atributos extras
         setTimeout(function(){
 
             Tawk_API.setAttributes({
@@ -87,31 +117,35 @@ Tawk_API.onLoad = function () {
                 versao_imob:getParam("versao_imob"),
                 versao_postgres:getParam("versao_postgres"),
                 machine_id:getParam("machine_id")
+            }, function(err){
+                if(err) console.log("Erro atributos extras:", err);
+                else console.log("Atributos enviados com sucesso");
             });
 
         },1000);
     });
 
-    //enviarLogBackend({
-    //    nome: dados.nome,
-    //    cartorio: getParam("cartorio_nome"),
-    //    cidade: getParam("cartorio_cidade"),
-    //    machine_id: getParam("machine_id")
-    //});
-
     Tawk_API.maximize();
 };
 
-// 🔥 fallback
+// ===============================
+// 🔹 FALLBACK
+// ===============================
 setTimeout(function(){
     if(!carregou){
+        console.log("Tawk não carregou - fallback manual");
+
         document.getElementById("loadingArea").classList.add("hidden");
         document.getElementById("btnManual").classList.remove("hidden");
     }
 },8000);
 
-// 🔹 botão
+
+// ===============================
+// 🔹 BOTÃO MANUAL
+// ===============================
 function abrirChat(){
+
     var tentativas=0;
 
     var intervalo=setInterval(function(){
@@ -122,6 +156,7 @@ function abrirChat(){
         }
 
         tentativas++;
+
         if(tentativas>10){
             clearInterval(intervalo);
             alert("Não foi possível abrir o chat.");
@@ -130,31 +165,24 @@ function abrirChat(){
     },500);
 }
 
-// 🔹 iniciar Tawk
+
+// ===============================
+// 🔹 INICIAR TAWK
+// ===============================
 function iniciarTawk(){
     var s1=document.createElement("script");
     var s0=document.getElementsByTagName("script")[0];
-
     s1.async=true;
     s1.src='https://embed.tawk.to/69b83be7ff278a1c38c186eb/1jjrqk0bd';
-    //s1.charset='UTF-8';
-    //s1.setAttribute('crossorigin','*');
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
 }
 
-// 🔹 inicialização
+
+// ===============================
+// 🔹 START
+// ===============================
 if(verificarLGPD()){
     iniciarTawk();
 }
-
-//function enviarLogBackend(dados){
-//    fetch("https://SEU_BACKEND/api/atendimento", {
-//        method: "POST",
-//        headers: {
-//            "Content-Type": "application/json"
-//        },
-//        body: JSON.stringify(dados)
-//    })
-//    .then(() => console.log("Log enviado"))
-//    .catch(() => console.log("Falha ao enviar log"));
-//}
