@@ -83,6 +83,9 @@ Tawk_API.onLoad = function () {
         }, 800);
     });
 
+    window.Tawk_API.addTags(['Cartório', 'Cartório001'], function(error){});
+    window.Tawk_API.addTags(['Cidade_UF', 'Cidade001-PR'], function(error){});
+    
     Tawk_API.maximize();
 };
 
