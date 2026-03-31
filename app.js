@@ -66,7 +66,8 @@ Tawk_API.onLoad = function () {
 
     Tawk_API.setAttributes({
         name: nome,
-        email: email
+        email: email,
+        cartorio: 'cartorio003'
     }, function () {
 
         setTimeout(function () {
