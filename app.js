@@ -35,8 +35,8 @@ function resetLGPD(){
 // ===============================
 // 🔹 DADOS
 // ===============================
-var nome = getParam("nome") || "Usuário";
-var email = getParam("email") || "usuario@local.com";
+var nome = getParam("usuario_imob") || "Usuário";
+var email = getParam("cartorio_email") || "usuario@local.com";
 var cartorio = getParam("cartorio_nome") || "Não informado";
 var cidade = getParam("cartorio_cidade") || "";
 var uf = getParam("cartorio_uf") || "";
@@ -71,15 +71,15 @@ Tawk_API.onLoad = function () {
 
         setTimeout(function () {
             Tawk_API.setAttributes({
-                cartorio: getParam("cartorio"),
-                cns: getParam("cartorio_cns"),
-                telefone: getParam("telefone"),
-                cidade: getParam("cidade"),
-                uf: getParam("uf"),
-                oficial: getParam("cartorio_oficial"),
-                imob: getParam("versao_imob"),
-                postgres: getParam("versao_postgres"),
-                idmaquina: getParam("idmaquina")
+                cartorio_nome: getParam("cartorio_nome"),
+                cartorio_cns: getParam("cartorio_cns"),
+                cartorio_telefone: getParam("cartorio_telefone"),
+                cartorio_cidade: getParam("cartorio_cidade"),
+                cartorio_uf: getParam("cartorio_uf"),
+                oficial_cartorio: getParam("oficial_cartorio"),
+                versao_imob: getParam("versao_imob"),
+                versao_postgresql: getParam("versao_postgresql"),
+                id_maquina: getParam("id_maquina")
             });
         }, 800);
     });
