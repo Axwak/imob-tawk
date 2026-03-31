@@ -65,21 +65,21 @@ Tawk_API.onLoad = function () {
     document.getElementById("loadingArea").classList.add("hidden");
 
     Tawk_API.setAttributes({
-        name: nome,
-        email: email,
-        cartorio: 'cartorio003'
+        usuario_imob: nome,
+        cartorio_email: email
     }, function () {
 
         setTimeout(function () {
             Tawk_API.setAttributes({
-                cartorio_nome: getParam("cartorio_nome"),
-                cartorio_cns: getParam("cartorio_cns"),
-                cartorio_cidade: getParam("cartorio_cidade"),
-                cartorio_uf: getParam("cartorio_uf"),
-                cartorio_oficial: getParam("cartorio_oficial"),
-                versao_imob: getParam("versao_imob"),
-                versao_postgres: getParam("versao_postgres"),
-                machine_id: getParam("machine_id")
+                cartorio: getParam("cartorio"),
+                cns: getParam("cartorio_cns"),
+                telefone: getParam("telefone"),
+                cidade: getParam("cidade"),
+                uf: getParam("uf"),
+                oficial: getParam("cartorio_oficial"),
+                imob: getParam("versao_imob"),
+                postgres: getParam("versao_postgres"),
+                idmaquina: getParam("idmaquina")
             });
         }, 800);
     });
